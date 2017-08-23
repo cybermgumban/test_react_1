@@ -27,10 +27,24 @@ class Detail extends React.Component {
         })
     }
 
-    render() {
+    handleBtnClick() {
+        ajax.get("https://api.github.com/repos/facebook/react/commits")
+        .end((error, response) => {
+            if (!error && response) {
+                console.dir(response.body);
+                this.setState({ commits: response.body });
+            } else {
+                console.log("There was an error fetching fro Github", error)
+            }
+        })
+    }
 
+    render() {
         return (
             <div>
+                <button onClick={this.handleBtnClick.bind(this)}>
+                    Refresh!
+                </button>
                 {this.state.commits.map((commit, index) => (
                     <p key={index}>
                         <strong>
