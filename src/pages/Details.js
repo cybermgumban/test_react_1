@@ -19,6 +19,7 @@ class Detail extends React.Component {
         ajax.get("https://api.github.com/repos/facebook/react/commits")
         .end((error, response) => {
             if (!error && response) {
+                console.dir(response.body);
                 this.setState({ commits: response.body });
             } else {
                 console.log("There was an error fetching fro Github", error)
