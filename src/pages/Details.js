@@ -9,10 +9,11 @@ var ajax = require("superagent");
 class Detail extends React.Component {
     constructor(props) {
         super(props);
-
+/*
         this.renderCommits = this.renderCommits.bind(this);
         this.renderForks = this.renderForks.bind(this);
         this.renderPulls = this.renderPulls.bind(this);
+*/
 
         this.state = {
             result: [],
@@ -23,7 +24,11 @@ class Detail extends React.Component {
     }
 
     componentWillMount() {
-        ajax.get("https://api.github.com/repos/facebook/react/commits")
+
+        this.fFeed("commits");
+        this.fFeed("forks");
+        this.fFeed("pulls");
+/*        ajax.get("https://api.github.com/repos/facebook/react/commits")
         .end((error, response) => {
             if (!error && response) {
                 console.dir(response.body)
@@ -53,7 +58,22 @@ class Detail extends React.Component {
             }
         }) 
     }
+*/
+    }
 
+fFeed(type) {
+        ajax.get(`https://api.github.com/repos/facebook/react/${type}`)
+        .end((error, response) => {
+            if (!error && response) {
+                console.dir(response.body)
+                this.setState({ [type]: response.body });
+            } else {
+                console.log(`Error fetching ${type}`, error)
+            }
+        })    
+}
+
+/*
         renderCommits() {
             console.log("Pressed Commit");
             this.setState( {result:
@@ -107,17 +127,69 @@ class Detail extends React.Component {
             </div>
             });    
         } 
+*/
+
+    renderBtnClick(mode) {
+            console.log(`Pressed ${mode}`);
+
+            if (mode === "Commits") {
+            this.setState( {result:
+            <div>
+                {this.state.commits.map((commit, index) => (
+                    <p key={index}>
+                        <strong>
+                            {commit.author ? commit.author.login : "Anonymous"}:
+                        </strong><br />
+                        <a href="commit.html_url">
+                            {commit.commit.message}
+                        </a>
+                    </p>
+                ))}
+            </div>
+            });
+            } else if (mode === "Forks") {
+            this.setState( {result:
+            <div>
+                {this.state.forks.map((forks, index) => (
+                    <p key={index}>
+                        <strong>
+                            {forks.default_branch}:
+                        </strong><br />
+                        <a href="forks.deployments_url">
+                            {forks.description}
+                        </a>
+                    </p>
+                ))}
+            </div>
+            }); 
+            } else if (mode === "Pulls") {
+            this.setState( {result:
+            <div>
+                {this.state.pulls.map((pulls, index) => (
+                    <p key={index}>
+                        <strong>
+                            {pulls.user.login ? pulls.user.login : "Anonymous"}:
+                        </strong><br />
+                        <a href={"pulls.html_url"}>
+                            {pulls.id}
+                        </a>
+                    </p>
+                ))}
+            </div>
+            });    
+            }
+    }
 
     render() {
         return (
             <div>
-                <button onClick={this.renderCommits}>
+                <button onClick={this.renderBtnClick.bind(this, "Commits")}>
                     Commits
                 </button>
-                <button onClick={this.renderForks}>
+                <button onClick={this.renderBtnClick.bind(this, "Forks")}>
                     Forks
                 </button>
-                <button onClick={this.renderPulls}>
+                <button onClick={this.renderBtnClick.bind(this, "Pulls")}>
                     Pulls
                 </button> <br />
                 {this.state.result}
