@@ -1,5 +1,7 @@
 var React = require("react");
 var ajax = require("superagent");
+var {Link} = require("react-router");
+
 //var Chance = require("chance");
 
 //npm install chance
@@ -140,7 +142,9 @@ fFeed(type) {
                 {this.state.commits.map((commit, index) => (
                     <p key={index}>
                         <strong>
+                            <Link to={`${commit.author.login}/events`} >
                             {commit.author ? commit.author.login : "Anonymous"}:
+                            </Link>
                         </strong><br />
                         <a href="commit.html_url">
                             {commit.commit.message}
@@ -148,7 +152,7 @@ fFeed(type) {
                     </p>
                 ))}
             </div>
-            });
+            }); 
             } else if (mode === "Forks") {
             this.setState( {result:
             <div>
@@ -170,14 +174,16 @@ fFeed(type) {
                 {this.state.pulls.map((pulls, index) => (
                     <p key={index}>
                         <strong>
+                            <Link to={`${pulls.user.login}/events`} >
                             {pulls.user.login ? pulls.user.login : "Anonymous"}:
+                            </Link>
                         </strong><br />
                         <a href={"pulls.html_url"}>
                             {pulls.id}
                         </a>
                     </p>
                 ))}
-            </div>
+            </div>        
             });    
             }
     }
