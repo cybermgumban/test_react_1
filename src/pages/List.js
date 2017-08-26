@@ -7,9 +7,9 @@ class List extends React.Component {
         <div>
         <p>This is the list page!</p>;
         <ul>
-            <li><Link to="/detail/react">React</Link></li>
-            <li><Link to="/detail/react-native">React Native</Link></li>
-            <li><Link to="/detail/jest">Jest</Link></li>
+            <li><Link to="/react">React</Link></li>
+            <li><Link to="/react-native">React Native</Link></li>
+            <li><Link to="/jest">Jest</Link></li>
         </ul>
         </div>
         );
