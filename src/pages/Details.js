@@ -62,7 +62,9 @@ class Detail extends React.Component {
     }
 
 fFeed(type) {
-        ajax.get(`https://api.github.com/repos/facebook/react/${type}`)
+    console.log(this.props.params.re);
+    var baseUrl = "https://api.github.com/repos/facebook";
+        ajax.get(`${baseUrl}/${this.props.params.re}/${type}`)
         .end((error, response) => {
             if (!error && response) {
                 console.dir(response.body)
